@@ -39,42 +39,44 @@ function InstallUpdateZAC64 () {
     }
 }
 
-$OSArch = (Get-WmiObject Win32_OperatingSystem).OSArchitecture
-if($OSArch -eq "32-bit"){
-    Write-Host "Checking if ZAC is installed..."
-    if((Get-ItemProperty -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*) | Where-Object {$_.DisplayName -eq "ZAC"}){
-    $ZACVersion = ((Get-ItemProperty -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*) | Where-Object {$_.DisplayName -contains "ZAC"}).DisplayVersion
-    Write-Host "ZAC (v$ZACVersion) is installed...checking if ZAC is up-to-date..."
-        if($ZACVersion -eq $LatestZACVersion){
-            Write-Host "ZAC is up-to-date!"
-            EXIT
+function PunchIt () {
+    $OSArch = (Get-WmiObject Win32_OperatingSystem).OSArchitecture
+    if($OSArch -eq "32-bit"){
+        Write-Host "Checking if ZAC is installed..."
+        if((Get-ItemProperty -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*) | Where-Object {$_.DisplayName -eq "ZAC"}){
+        $ZACVersion = ((Get-ItemProperty -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*) | Where-Object {$_.DisplayName -contains "ZAC"}).DisplayVersion
+        Write-Host "ZAC (v$ZACVersion) is installed...checking if ZAC is up-to-date..."
+            if($ZACVersion -eq $LatestZACVersion){
+                Write-Host "ZAC is up-to-date!"
+                EXIT
+            }
+            else{
+                Write-Host "ZAC is not up-to-date...updating now..."
+                InstallUpdateZAC32
+            }
         }
         else{
-            Write-Host "ZAC is not up-to-date...updating now..."
+            Write-Host "ZAC is not installed...installing now..."
             InstallUpdateZAC32
         }
     }
-    else{
-        Write-Host "ZAC is not installed...installing now..."
-        InstallUpdateZAC32
-    }
-}
-elseif($OSArch -eq "64-bit"){
-    Write-Host "Checking if ZAC is installed..."
-    if((Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*) | Where-Object {$_.DisplayName -eq "ZAC"}){
-    $ZACVersion = ((Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*) | Where-Object {$_.DisplayName -contains "ZAC"}).DisplayVersion
-    Write-Host "ZAC (v$ZACVersion) is installed...checking if ZAC is up-to-date..."
-        if($ZACVersion -eq $LatestZACVersion){
-            Write-Host "ZAC is up-to-date!"
-            EXIT
+    elseif($OSArch -eq "64-bit"){
+        Write-Host "Checking if ZAC is installed..."
+        if((Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*) | Where-Object {$_.DisplayName -eq "ZAC"}){
+        $ZACVersion = ((Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*) | Where-Object {$_.DisplayName -contains "ZAC"}).DisplayVersion
+        Write-Host "ZAC (v$ZACVersion) is installed...checking if ZAC is up-to-date..."
+            if($ZACVersion -eq $LatestZACVersion){
+                Write-Host "ZAC is up-to-date!"
+                EXIT
+            }
+            else{
+                Write-Host "ZAC is not up-to-date...updating now..."
+                InstallUpdateZAC64
+            }
         }
         else{
-            Write-Host "ZAC is not up-to-date...updating now..."
+            Write-Host "ZAC is not installed...installing now..."
             InstallUpdateZAC64
         }
-    }
-    else{
-        Write-Host "ZAC is not installed...installing now..."
-        InstallUpdateZAC64
     }
 }
