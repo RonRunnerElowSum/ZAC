@@ -1,4 +1,4 @@
-$LatestZACVersion = "8.0.24"
+$LatestZACVersion = "8.0.28"
 
 $32bitDownloadURL = "https://mirror.zultys.biz/ZAC/ZAC_x86-$LatestZACVersion.exe"
 $64bitDownloadURL = "https://mirror.zultys.biz/ZAC/ZAC_x64-$LatestZACVersion.exe"
